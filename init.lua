@@ -86,7 +86,8 @@ function do_state()
     running_3, mode_3 = tmr.state(3)
 
     -- Acciones de acuerdo al estado actual.
-    if state == "OFF" then  -- Si el estado es OFF se apagan los motores.
+    if state == "OFF" then  
+    -- Si el estado es OFF se apagan los motores.
         motor_control.stop()
         obstacle = false
         ok_to_go = false
@@ -94,12 +95,14 @@ function do_state()
         motor_done = false
         distance_done = false
         obstacle_done = false
-    elseif state == "MOVING" then -- Si el estado es MOVING se mueve hacia adelante y se verifica la existencia de obstáculos.
+    elseif state == "MOVING" then 
+    -- Si el estado es MOVING se mueve hacia adelante y se verifica la existencia de obstáculos.
         motor_control.move('forward')
         ultrasonic_sensor.get_distance(function(distance)
             obstacle = (distance < 30)
         end)
-    elseif state == "NEED_TO_AVOID" then -- Si el estado es NEED_TO_AVOID se verifíca por segunda vez la existencia de un obstáculo delantero.
+    elseif state == "NEED_TO_AVOID" then 
+    -- Si el estado es NEED_TO_AVOID se verifíca por segunda vez la existencia de un obstáculo delantero.
         if not distance_done then
             motor_control.stop()
             obstacle = false
@@ -111,10 +114,12 @@ function do_state()
                 obstacle_done = true
             end)
         end
-    elseif state == "AVOIDING" then -- Si el estado es AVOIDING se frenan los motores.
+    elseif state == "AVOIDING" then 
+    -- Si el estado es AVOIDING se frenan los motores.
         motor_control.stop()
         obstacle = false
-    elseif state == "LOOKING_LEFT" then -- Si el estado es LOOKING_LEFT se gira el servo para detectar obstáculos a la izquierda.
+    elseif state == "LOOKING_LEFT" then 
+    -- Si el estado es LOOKING_LEFT se gira el servo para detectar obstáculos a la izquierda.
         if not running_2 then
             servo.look_left()
             tmr.alarm(2, 1500, tmr.ALARM_SINGLE, function()
@@ -125,7 +130,8 @@ function do_state()
                 end)
             end)
         end
-    elseif state == "LOOKING_RIGHT" then -- Si el estado es LOOKING_RIGHT se gira el servo para detectar obstáculos a la derecha.
+    elseif state == "LOOKING_RIGHT" then 
+    -- Si el estado es LOOKING_RIGHT se gira el servo para detectar obstáculos a la derecha.
         if not running_2 then
             servo.look_right()
             tmr.alarm(2, 1500, tmr.ALARM_SINGLE, function()
@@ -136,7 +142,8 @@ function do_state()
                 end)
             end)
         end
-    elseif state == "TURNING_LEFT" then -- Si el estado es TURNING_LEFT se gira hacia la izquierda teniendo en cuenta la cantidad de pulsos generados por el encoder.
+    elseif state == "TURNING_LEFT" then 
+    -- Si el estado es TURNING_LEFT se gira hacia la izquierda teniendo en cuenta la cantidad de pulsos generados por el encoder.
         if not running_3 then
             opt_enc.reset_counter()
             motor_control.rotate('left')
@@ -150,7 +157,8 @@ function do_state()
                 end
             end)
         end
-    elseif state == "TURNING_RIGHT" then -- Si el estado es TURNING_RIGHT se gira hacia la derecha teniendo en cuenta la cantidad de pulsos generados por el encoder.
+    elseif state == "TURNING_RIGHT" then 
+    -- Si el estado es TURNING_RIGHT se gira hacia la derecha teniendo en cuenta la cantidad de pulsos generados por el encoder.
         if not running_3 then
             opt_enc.reset_counter()
             motor_control.rotate('right')
@@ -164,7 +172,8 @@ function do_state()
                 end
             end)
         end
-    elseif state == "TURNING_AROUND" then -- Si el estado es TURNING_AROUND se gira hacia la izquierda hasta girar 180°.
+    elseif state == "TURNING_AROUND" then 
+    -- Si el estado es TURNING_AROUND se gira hacia la izquierda hasta girar 180°.
         if not running_3 then
             opt_enc.reset_counter()
             motor_control.rotate('left')
